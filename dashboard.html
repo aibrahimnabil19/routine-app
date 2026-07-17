@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morning — My Routine</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="phone-shell">
+
+  <div class="topbar">
+    <button class="pill-btn" id="settingsBtn">⚙️ Settings</button>
+    <button class="pill-btn" id="logoutBtn">Log out</button>
+  </div>
+
+  <div class="app-header">
+    <div>
+      <h1>Morning, <span id="userName">there</span></h1>
+      <p class="date" id="todayLabel">Loading…</p>
+    </div>
+    <button class="avatar" id="avatarBtn">🐯</button>
+  </div>
+
+  <div class="week-strip" id="weekStrip"></div>
+
+  <div class="reminder-card">
+    <div>
+      <h2>Set the reminder</h2>
+      <p>Never miss your morning routine! Set a time on each task and we'll email you if it slips.</p>
+      <button class="btn-dark" id="reminderSetupBtn">Set Now</button>
+    </div>
+    <div class="reminder-bell">🔔</div>
+  </div>
+
+  <div class="section-head">
+    <h3>Daily routine</h3>
+    <button class="see-all" id="seeAllBtn">See all</button>
+  </div>
+
+  <div class="task-list" id="taskList">
+    <div class="empty-state">Loading your routine…</div>
+  </div>
+
+</div>
+
+<button class="fab" id="addTaskBtn">+</button>
+
+<!-- ===================== Add / Edit Task Modal ===================== -->
+<div class="modal-overlay" id="taskModalOverlay" style="display:none">
+  <div class="modal-sheet">
+    <h2 id="modalTitle">New goal</h2>
+
+    <div class="type-toggle">
+      <button type="button" data-type="simple" class="active" id="typeSimpleBtn">Simple habit</button>
+      <button type="button" data-type="alternating" id="typeAltBtn">Alternating list</button>
+    </div>
+
+    <div class="field">
+      <label id="titleLabel">Title</label>
+      <input type="text" id="taskTitle" placeholder="e.g. Read 10 pages">
+    </div>
+
+    <div class="field" id="emojiField">
+      <label>Icon</label>
+      <div class="emoji-row" id="emojiRow"></div>
+    </div>
+
+    <div id="altItemsSection" style="display:none">
+      <div class="field">
+        <label>Your list (e.g. book titles) — one is active at a time</label>
+      </div>
+      <div class="items-list" id="itemsList"></div>
+      <button type="button" class="add-item-btn" id="addItemBtn">+ Add item</button>
+    </div>
+
+    <div class="form-row">
+      <div class="field">
+        <label>Duration (min)</label>
+        <input type="number" id="taskDuration" value="10" min="1">
+      </div>
+      <div class="field">
+        <label>Reminder time</label>
+        <input type="time" id="taskReminder" value="08:00">
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="btn-secondary" id="cancelModalBtn">Cancel</button>
+      <button type="button" class="btn-primary" id="saveTaskBtn">Save goal</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== Settings Modal ===================== -->
+<div class="modal-overlay" id="settingsModalOverlay" style="display:none">
+  <div class="modal-sheet">
+    <h2>Settings</h2>
+
+    <div class="field">
+      <label>Display name</label>
+      <input type="text" id="settingsName">
+    </div>
+    <div class="field">
+      <label>Timezone</label>
+      <select id="settingsTimezone"></select>
+    </div>
+    <div class="field">
+      <label>Email reminders</label>
+      <select id="settingsReminders">
+        <option value="true">On — email me about tasks I miss</option>
+        <option value="false">Off</option>
+      </select>
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="btn-secondary" id="closeSettingsBtn">Close</button>
+      <button type="button" class="btn-primary" id="saveSettingsBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/dashboard.js"></script>
+</body>
+</html>

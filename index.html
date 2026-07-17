@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morning — Sign in</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="brand">🐯</div>
+    <h1 id="formTitle">Welcome back</h1>
+    <p class="sub" id="formSub">Sign in to keep your streaks going.</p>
+
+    <div id="msgBox"></div>
+
+    <form id="authForm">
+      <div class="field" id="nameField" style="display:none">
+        <label for="fullName">Your name</label>
+        <input type="text" id="fullName" placeholder="Budi">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••" required minlength="6">
+      </div>
+      <button type="submit" class="btn-primary" id="submitBtn">Sign in</button>
+    </form>
+
+    <div class="auth-switch">
+      <span id="switchText">Don't have an account?</span>
+      <button type="button" id="switchBtn">Sign up</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/auth.js"></script>
+</body>
+</html>
