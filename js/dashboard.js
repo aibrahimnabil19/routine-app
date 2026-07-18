@@ -334,6 +334,7 @@ async function toggleComplete(taskId) {
       .from("task_items")
       .update({ status: "done" })
       .eq("id", t.activeItem.id);
+
     const { data: nextItem } = await supabase
       .from("task_items")
       .select("*")
@@ -342,11 +343,31 @@ async function toggleComplete(taskId) {
       .order("position", { ascending: true })
       .limit(1)
       .maybeSingle();
+
     if (nextItem) {
       await supabase
         .from("task_items")
         .update({ status: "active" })
         .eq("id", nextItem.id);
+    } else if (t.loop_queue !== false) {
+      // queue exhausted — loop back to the start instead of stopping
+      const { data: allItems } = await supabase
+        .from("task_items")
+        .select("id, position")
+        .eq("task_id", taskId)
+        .order("position", { ascending: true });
+
+      if (allItems && allItems.length) {
+        await supabase
+          .from("task_items")
+          .update({ status: "pending" })
+          .eq("task_id", taskId);
+        await supabase
+          .from("task_items")
+          .update({ status: "active" })
+          .eq("id", allItems[0].id);
+        toast(`Looping back to the start of "${t.title}" 🔁`);
+      }
     } else {
       toast(
         `You finished your list for "${t.title}" 🎉 Add more items any time.`,
@@ -379,6 +400,7 @@ function openTaskModal(task = null) {
   setType(currentType);
   renderEmojiRow(task ? task.icon : EMOJIS[0]);
   renderDayPicker(task ? task.active_days : DAYS.slice());
+  $("loopQueueCheckbox").checked = task ? task.loop_queue !== false : true;
   $("oneOffCheckbox").checked = task ? task.is_recurring === false : false;
   toggleDayPickerVisibility();
 
@@ -463,18 +485,19 @@ async function saveTask() {
   const reminderTime = $("taskReminder").value || null;
 
   const payload = {
-    title,
-    icon,
-    duration_minutes: duration,
-    reminder_time: reminderTime,
-    type: currentType,
-    user_id: user.id,
-    is_active: true,
-    is_recurring: !$("oneOffCheckbox").checked,
-    active_days: selectedDays.size
-      ? DAYS.filter((d) => selectedDays.has(d))
-      : DAYS,
-  };
+  title,
+  icon,
+  duration_minutes: duration,
+  reminder_time: reminderTime,
+  type: currentType,
+  user_id: user.id,
+  is_active: true,
+  is_recurring: !$("oneOffCheckbox").checked,
+  loop_queue: $("loopQueueCheckbox").checked,
+  active_days: selectedDays.size
+    ? DAYS.filter((d) => selectedDays.has(d))
+    : DAYS,
+};
 
   let taskId = editingTaskId;
 
