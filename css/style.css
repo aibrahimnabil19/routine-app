@@ -651,5 +651,20 @@ a {
   color: #fff;
 }
 
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.checkbox-field input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-brown);
+}
+
 /* Google font import */
 @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap");

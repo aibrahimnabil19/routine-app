@@ -60,6 +60,11 @@ function toast(msg) {
   setTimeout(() => t.remove(), 2400);
 }
 
+function toggleDayPickerVisibility() {
+  const isOneOff = $("oneOffCheckbox").checked;
+  $("dayPicker").parentElement.style.display = isOneOff ? "none" : "block";
+}
+
 const DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 const DAY_LABELS = {
   mon: "Mon",
@@ -318,6 +323,11 @@ async function toggleComplete(taskId) {
     })
     .eq("id", taskId);
 
+  // one-off goals: archive so they stop appearing after completion
+  if (t.is_recurring === false) {
+    await supabase.from("tasks").update({ is_active: false }).eq("id", taskId);
+  }
+
   // advance alternating queue
   if (t.type === "alternating" && t.activeItem) {
     await supabase
@@ -369,6 +379,8 @@ function openTaskModal(task = null) {
   setType(currentType);
   renderEmojiRow(task ? task.icon : EMOJIS[0]);
   renderDayPicker(task ? task.active_days : DAYS.slice());
+  $("oneOffCheckbox").checked = task ? task.is_recurring === false : false;
+  toggleDayPickerVisibility();
 
   $("itemsList").innerHTML = "";
   itemCounter = 0;
@@ -458,6 +470,7 @@ async function saveTask() {
     type: currentType,
     user_id: user.id,
     is_active: true,
+    is_recurring: !$("oneOffCheckbox").checked,
     active_days: selectedDays.size
       ? DAYS.filter((d) => selectedDays.has(d))
       : DAYS,
@@ -559,6 +572,7 @@ function bindEvents() {
   $("typeSimpleBtn").addEventListener("click", () => setType("simple"));
   $("typeAltBtn").addEventListener("click", () => setType("alternating"));
   $("addItemBtn").addEventListener("click", () => addItemRow(""));
+  $("oneOffCheckbox").addEventListener("change", toggleDayPickerVisibility);
 
   $("settingsBtn").addEventListener("click", openSettings);
   $("avatarBtn").addEventListener("click", openSettings);
