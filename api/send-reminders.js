@@ -12,13 +12,13 @@
 //   REMINDER_FROM_EMAIL         (e.g. "Morning Routine <reminders@yourdomain.com>")
 //   CRON_SECRET                 (optional — protects this endpoint from random public calls)
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 export default async function handler(req, res) {
   if (process.env.CRON_SECRET) {
-    const auth = req.headers['authorization'];
+    const auth = req.headers["authorization"];
     if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return res.status(401).json({ error: "Unauthorized" });
     }
   }
 
@@ -28,56 +28,78 @@ export default async function handler(req, res) {
   const fromEmail = process.env.REMINDER_FROM_EMAIL;
 
   if (!supabaseUrl || !serviceKey) {
-    return res.status(500).json({ error: 'Missing Supabase service credentials' });
+    return res
+      .status(500)
+      .json({ error: "Missing Supabase service credentials" });
   }
 
   const supabase = createClient(supabaseUrl, serviceKey);
 
   try {
     const { data: tasks, error } = await supabase
-      .from('tasks')
-      .select('id, title, user_id, reminder_time, last_reminder_sent_date, duration_minutes, profiles!inner(email, full_name, timezone, reminders_enabled)')
-      .eq('is_active', true)
-      .not('reminder_time', 'is', null);
+      .from("tasks")
+      .select(
+        "id, title, user_id, reminder_time, last_reminder_sent_date, duration_minutes, active_days, profiles!inner(email, full_name, timezone, reminders_enabled)",
+      )
+      .eq("is_active", true)
+      .not("reminder_time", "is", null);
 
     if (error) throw error;
 
-    let checked = 0, sent = 0;
+    let checked = 0,
+      sent = 0;
     const results = [];
 
     for (const task of tasks || []) {
       checked++;
       const profileRow = task.profiles;
-      if (!profileRow || profileRow.reminders_enabled === false || !profileRow.email) continue;
+      if (
+        !profileRow ||
+        profileRow.reminders_enabled === false ||
+        !profileRow.email
+      )
+        continue;
 
-      const tz = profileRow.timezone || 'UTC';
-      const nowInTz = new Date(new Date().toLocaleString('en-US', { timeZone: tz }));
+      const tz = profileRow.timezone || "UTC";
+      const nowInTz = new Date(
+        new Date().toLocaleString("en-US", { timeZone: tz }),
+      );
       const todayLocal = nowInTz.toISOString().slice(0, 10); // approx local date
 
       if (task.last_reminder_sent_date === todayLocal) continue; // already sent today
 
-      const [h, m] = task.reminder_time.split(':').map(Number);
+      const todayKey = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"][
+        nowInTz.getDay()
+      ];
+      if (
+        task.active_days &&
+        task.active_days.length &&
+        !task.active_days.includes(todayKey)
+      )
+        continue;
+
+      const [h, m] = task.reminder_time.split(":").map(Number);
       const reminderMinutes = h * 60 + m;
       const nowMinutes = nowInTz.getHours() * 60 + nowInTz.getMinutes();
       if (nowMinutes < reminderMinutes) continue; // not due yet
 
       // has it been completed today already?
       const { data: completion } = await supabase
-        .from('task_completions')
-        .select('id')
-        .eq('task_id', task.id)
-        .eq('log_date', todayLocal)
+        .from("task_completions")
+        .select("id")
+        .eq("task_id", task.id)
+        .eq("log_date", todayLocal)
         .maybeSingle();
 
       if (completion) continue; // already done, no reminder needed
 
       // send email
       if (resendKey && fromEmail) {
-        await fetch('https://api.resend.com/emails', {
-          method: 'POST',
+        await fetch("https://api.resend.com/emails", {
+          method: "POST",
           headers: {
-            'Authorization': `Bearer ${resendKey}`,
-            'Content-Type': 'application/json'
+            Authorization: `Bearer ${resendKey}`,
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             from: fromEmail,
@@ -85,16 +107,19 @@ export default async function handler(req, res) {
             subject: `Reminder: "${task.title}" is still open today`,
             html: `
               <div style="font-family:sans-serif;max-width:480px;margin:auto;padding:24px">
-                <h2 style="margin-bottom:8px">Hey ${profileRow.full_name || 'there'} 👋</h2>
+                <h2 style="margin-bottom:8px">Hey ${profileRow.full_name || "there"} 👋</h2>
                 <p>You haven't marked <strong>${escapeHtml(task.title)}</strong> as done yet today
-                   (${task.duration_minutes || 0} min, due by ${task.reminder_time.slice(0,5)}).</p>
+                   (${task.duration_minutes || 0} min, due by ${task.reminder_time.slice(0, 5)}).</p>
                 <p>Jump back in and keep your streak alive.</p>
-              </div>`
-          })
+              </div>`,
+          }),
         });
       }
 
-      await supabase.from('tasks').update({ last_reminder_sent_date: todayLocal }).eq('id', task.id);
+      await supabase
+        .from("tasks")
+        .update({ last_reminder_sent_date: todayLocal })
+        .eq("id", task.id);
       sent++;
       results.push({ task: task.title, user: profileRow.email });
     }
@@ -107,5 +132,11 @@ export default async function handler(req, res) {
 }
 
 function escapeHtml(s) {
-  return (s || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  return (s || "").replace(
+    /[&<>"']/g,
+    (m) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        m
+      ],
+  );
 }

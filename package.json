@@ -2,6 +2,7 @@
   "name": "morning-routine-app",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Personal daily routine & goal tracker with alternating goals and email reminders, backed by Supabase, deployed on Vercel.",
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0"

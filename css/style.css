@@ -20,23 +20,41 @@
   --radius-md: 20px;
   --radius-sm: 14px;
   --font-display: "Fraunces", "Georgia", serif;
-  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   font-family: var(--font-body);
   color: var(--ink);
-  background: linear-gradient(160deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 55%, var(--bg-gradient-3) 100%);
+  background: linear-gradient(
+    160deg,
+    var(--bg-gradient-1) 0%,
+    var(--bg-gradient-2) 55%,
+    var(--bg-gradient-3) 100%
+  );
   min-height: 100vh;
 }
 
-button { font-family: inherit; cursor: pointer; border: none; }
-input, select { font-family: inherit; }
-a { color: inherit; }
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+}
+input,
+select {
+  font-family: inherit;
+}
+a {
+  color: inherit;
+}
 
 /* ---------------- Phone shell (centers the app like the mockup) --------------- */
 .phone-shell {
@@ -46,7 +64,7 @@ a { color: inherit; }
   background: #f7f0ee;
   position: relative;
   padding-bottom: 40px;
-  box-shadow: 0 30px 80px rgba(43,43,61,0.18);
+  box-shadow: 0 30px 80px rgba(43, 43, 61, 0.18);
 }
 
 @media (min-width: 720px) {
@@ -59,7 +77,9 @@ a { color: inherit; }
 }
 
 /* ---------------- Status/header spacing ---------------- */
-.status-spacer { height: 18px; }
+.status-spacer {
+  height: 18px;
+}
 
 .app-header {
   display: flex;
@@ -136,7 +156,10 @@ a { color: inherit; }
   color: #fff;
   border-color: var(--ink);
 }
-.day-col.today .dow { color: var(--ink); font-weight: 600; }
+.day-col.today .dow {
+  color: var(--ink);
+  font-weight: 600;
+}
 
 /* ---------------- Reminder banner ---------------- */
 .reminder-card {
@@ -173,7 +196,10 @@ a { color: inherit; }
   font-weight: 600;
 }
 
-.reminder-bell { font-size: 46px; flex-shrink: 0; }
+.reminder-bell {
+  font-size: 46px;
+  flex-shrink: 0;
+}
 
 /* ---------------- Section header ---------------- */
 .section-head {
@@ -220,7 +246,7 @@ a { color: inherit; }
   justify-content: center;
   color: #fff;
   font-size: 13px;
-  transition: all .15s ease;
+  transition: all 0.15s ease;
 }
 .check-dot.done {
   background: var(--accent-orange);
@@ -235,7 +261,7 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   gap: 12px;
-  box-shadow: 0 4px 14px rgba(43,43,61,0.04);
+  box-shadow: 0 4px 14px rgba(43, 43, 61, 0.04);
 }
 
 .task-icon {
@@ -249,7 +275,10 @@ a { color: inherit; }
   flex-shrink: 0;
 }
 
-.task-info { flex: 1; min-width: 0; }
+.task-info {
+  flex: 1;
+  min-width: 0;
+}
 .task-info .t-title {
   font-size: 15px;
   font-weight: 600;
@@ -275,10 +304,17 @@ a { color: inherit; }
   border-left: 1px solid var(--line);
 }
 
-.task-card.completed { opacity: .55; }
-.task-card.completed .t-title { text-decoration: line-through; }
+.task-card.completed {
+  opacity: 0.55;
+}
+.task-card.completed .t-title {
+  text-decoration: line-through;
+}
 
-.task-actions { display: flex; gap: 6px; }
+.task-actions {
+  display: flex;
+  gap: 6px;
+}
 .icon-btn {
   width: 26px;
   height: 26px;
@@ -290,7 +326,9 @@ a { color: inherit; }
   justify-content: center;
   font-size: 13px;
 }
-.icon-btn:hover { background: #ece3df; }
+.icon-btn:hover {
+  background: #ece3df;
+}
 
 /* ---------------- FAB ---------------- */
 .fab {
@@ -306,11 +344,13 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 12px 28px rgba(92,58,33,0.35);
+  box-shadow: 0 12px 28px rgba(92, 58, 33, 0.35);
   z-index: 40;
 }
 @media (max-width: 460px) {
-  .fab { right: 24px; }
+  .fab {
+    right: 24px;
+  }
 }
 
 /* ---------------- Empty state ---------------- */
@@ -319,7 +359,11 @@ a { color: inherit; }
   padding: 40px 24px;
   color: var(--ink-faint);
 }
-.empty-state .emo { font-size: 40px; display: block; margin-bottom: 10px; }
+.empty-state .emo {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 10px;
+}
 
 /* ---------------- Auth pages ---------------- */
 .auth-wrap {
@@ -336,7 +380,7 @@ a { color: inherit; }
   background: #fff;
   border-radius: var(--radius-lg);
   padding: 36px 30px;
-  box-shadow: 0 30px 70px rgba(43,43,61,0.15);
+  box-shadow: 0 30px 70px rgba(43, 43, 61, 0.15);
 }
 
 .auth-card .brand {
@@ -354,7 +398,9 @@ a { color: inherit; }
   margin: 0 0 26px;
 }
 
-.field { margin-bottom: 16px; }
+.field {
+  margin-bottom: 16px;
+}
 .field label {
   display: block;
   font-size: 13px;
@@ -362,7 +408,8 @@ a { color: inherit; }
   margin-bottom: 6px;
   color: var(--ink-soft);
 }
-.field input, .field select {
+.field input,
+.field select {
   width: 100%;
   padding: 13px 14px;
   border-radius: 12px;
@@ -370,9 +417,12 @@ a { color: inherit; }
   font-size: 14px;
   background: #fbf8f7;
   outline: none;
-  transition: border-color .15s;
+  transition: border-color 0.15s;
 }
-.field input:focus, .field select:focus { border-color: var(--peach-deep); }
+.field input:focus,
+.field select:focus {
+  border-color: var(--peach-deep);
+}
 
 .btn-primary {
   width: 100%;
@@ -384,7 +434,10 @@ a { color: inherit; }
   font-weight: 600;
   margin-top: 6px;
 }
-.btn-primary:disabled { opacity: .6; cursor: default; }
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
 
 .btn-secondary {
   width: 100%;
@@ -414,21 +467,29 @@ a { color: inherit; }
   border-radius: 10px;
   margin-bottom: 16px;
 }
-.auth-msg.error { background: #fbe4e2; color: var(--danger); }
-.auth-msg.success { background: #e5f0da; color: #4c7a2e; }
+.auth-msg.error {
+  background: #fbe4e2;
+  color: var(--danger);
+}
+.auth-msg.success {
+  background: #e5f0da;
+  color: #4c7a2e;
+}
 
 /* ---------------- Modal ---------------- */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(43,43,61,0.45);
+  background: rgba(43, 43, 61, 0.45);
   display: flex;
   align-items: flex-end;
   justify-content: center;
   z-index: 100;
 }
 @media (min-width: 720px) {
-  .modal-overlay { align-items: center; }
+  .modal-overlay {
+    align-items: center;
+  }
 }
 
 .modal-sheet {
@@ -441,7 +502,9 @@ a { color: inherit; }
   overflow-y: auto;
 }
 @media (min-width: 720px) {
-  .modal-sheet { border-radius: 28px; }
+  .modal-sheet {
+    border-radius: 28px;
+  }
 }
 
 .modal-sheet h2 {
@@ -485,13 +548,31 @@ a { color: inherit; }
   align-items: center;
   justify-content: center;
 }
-.emoji-choice.active { background: var(--peach); }
+.emoji-choice.active {
+  background: var(--peach);
+}
 
-.items-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-.item-row { display: flex; gap: 8px; align-items: center; }
-.item-row input { flex: 1; }
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.item-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.item-row input {
+  flex: 1;
+}
 .item-row button {
-  width: 34px; height: 34px; border-radius: 10px; background: #fbe4e2; color: var(--danger); flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #fbe4e2;
+  color: var(--danger);
+  flex-shrink: 0;
 }
 .add-item-btn {
   background: #f5f0ee;
@@ -503,11 +584,22 @@ a { color: inherit; }
   width: 100%;
 }
 
-.form-row { display: flex; gap: 10px; }
-.form-row .field { flex: 1; }
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+.form-row .field {
+  flex: 1;
+}
 
-.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-.modal-actions button { flex: 1; }
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.modal-actions button {
+  flex: 1;
+}
 
 /* ---------------- Topbar (dashboard secondary controls) ---------------- */
 .topbar {
@@ -538,8 +630,26 @@ a { color: inherit; }
   border-radius: 14px;
   font-size: 13px;
   z-index: 200;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.day-picker {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.day-chip {
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #f5f0ee;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+.day-chip.active {
+  background: var(--accent-brown);
+  color: #fff;
 }
 
 /* Google font import */
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap");
